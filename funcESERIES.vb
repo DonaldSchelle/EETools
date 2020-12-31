@@ -9,7 +9,7 @@ Public Module funcESERIES
     <ExcelFunction(Name:="ESERIES",
                    Category:="Engineering-ESERIES",
                    Description:="Calculates closest standard E-series value",
-                   HelpTopic:="https://en.wikipedia.org/wiki/E_series_of_preferred_numbers")>
+                   HelpTopic:="http://github.com/DonaldSchelle/EETools")>
     Public Function ESERIES(
         <ExcelArgument(Name:="dValue", Description:="Value to convert")> dValue As Double,
         <ExcelArgument(Name:="sSeries", Description:="Desired series (E3-E192)")> sSeries As String,
@@ -85,7 +85,7 @@ Public Module funcESERIES
     <ExcelFunction(Name:="ESeriesResistorPair",
                    Category:="Engineering-ESERIES",
                    Description:="Calculates two resistor values that combine to the closest target value",
-                   HelpTopic:="Replace with GitHub Reference")>
+                   HelpTopic:="http://github.com/DonaldSchelle/EETools")>
     Public Function ESeriesResistorPair(
         <ExcelArgument(Name:="dTarget", Description:="Target resistance value.  Must be greater than 0.")> dTarget As Double,
         <ExcelArgument(Name:="sSeries", Description:="Desired E-series (E3-E192)")> sSeries As String,
@@ -192,7 +192,7 @@ Public Module funcESERIES
     <ExcelFunction(Name:="ESeriesResistorRatio",
                    Category:="Engineering-ESERIES",
                    Description:="Calculates E-Series divider values to achieve closest ratio",
-                   HelpTopic:="Replace with GitHub Link")>
+                   HelpTopic:="http://github.com/DonaldSchelle/EETools")>
     Public Function ESeriesResistorRatio(
         <ExcelArgument(Name:="dNumerator", Description:="Numerator")> dNumerator As Double,
         <ExcelArgument(Name:="dDenominator", Description:="Denominator")> dDemoninator As Double,
