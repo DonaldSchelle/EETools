@@ -14,16 +14,15 @@ Public Module funcESERIES
         <ExcelArgument(Name:="dValue", Description:="Value to convert")> dValue As Double,
         <ExcelArgument(Name:="sSeries", Description:="Desired series (E3-E192)")> sSeries As String,
         <ExcelArgument(Name:="[iRound]", Description:="Rounding Type: -1 = Next Lowest, (0 = Closest), +1 = Next Highest")> Optional iRound As Integer = 0,
-        <ExcelArgument(Name:="[iCalcType]", Description:="Method for determining offset: (0 = Algebraic), 1 = Geometric")> Optional iCalcType As Integer = 0,
+        <ExcelArgument(Name:="[iCalcType]", Description:="Method for determining offset: (0 = algebraic), 1 = percent, 2 = percent difference, 3 = logarithmic")> Optional iCalcType As Integer = 0,
         <ExcelArgument(Name:="[dMinLimit]", Description:="Minimum Returned Value (default: 1)")> Optional dMinLimit As Double = 1,
         <ExcelArgument(Name:="[dMaxLimit]", Description:="Maximum Returned Value (default: 1,000,000)")> Optional dMaxLimit As Double = 1000000)
-
 
         'Function to return closest standard resistor value
         'dValue = target value (must be greater than 0)
         'sSeries (String) = series to be used
         '[iRound] = Rounding option 1 = next highest, (0 = closest), -1 = next lowest
-        '[iCalcType] = Used to determine closest value (0 = algebraic), 1 = geometric
+        '[iCalcType] = Used to determine closest value (0 = algebraic), 1 = percent, 2 = percent difference, 3 = logarithmic
         '[dMinLimit] = Minimum returned value (1)
         '[dMaxLimit] = Maximum returned value (1000000)
 
@@ -41,6 +40,8 @@ Public Module funcESERIES
 
         'Error checking of input values
         If dValue <= 0 Then Return ExcelError.ExcelErrorValue
+        If (iRound < -1) Or (iRound > +1) Then Return ExcelError.ExcelErrorValue
+        If (iCalcType < 0) Or (iCalcType > 3) Then Return ExcelError.ExcelErrorValue
         If dMinLimit <= 0 Then Return ExcelError.ExcelErrorValue
         If dMaxLimit <= 0 Then Return ExcelError.ExcelErrorValue
 
@@ -92,7 +93,7 @@ Public Module funcESERIES
         <ExcelArgument(Name:="iComboType", Description:="Combination Type.  0 = Series, 1 = Parallel")> iComboType As Integer,
         <ExcelArgument(Name:="iReturnValue", Description:="Return Value: 0 = Array, 1 = Resistor #1, 2 = Resistor #2, 3 = Remainder")> iReturnValue As Integer,
         <ExcelArgument(Name:="[iRound]", Description:="Return Value Rounding: -1 = Force Lower, (0 = Closest), +1 = Force Higher")> Optional iRound As Integer = 0,
-        <ExcelArgument(Name:="[iCalcType]", Description:="Method for determining offset: (0 = algebraic), 1 = geometric")> Optional iCalcType As Integer = 0,
+        <ExcelArgument(Name:="[iCalcType]", Description:="Method for determining offset: (0 = algebraic), 1 = percent, 2 = percent difference, 3 = logarithmic")> Optional iCalcType As Integer = 0,
         <ExcelArgument(Name:="[dMatchType]", Description:="Matching Criteria: -1 = Comprehensive/Best Match, (0 = Quick Match), >0 = Preferred Value Match")> Optional dMatchType As Double = 0,
         <ExcelArgument(Name:="[dCompMinLimit]", Description:="Minimum Individual Component Value (1)")> Optional dCompMinLimit As Double = 1,
         <ExcelArgument(Name:="[dCompMaxLimit]", Description:="Maximum Individual Component Value (1,000,000)")> Optional dCompMaxLimit As Double = 1000000)
@@ -103,7 +104,7 @@ Public Module funcESERIES
         'iComboType = Series(0)/Parallel(1) combination
         'iReturnValue = Return value from function, array or chosen single value
         '[iRound] = Rounding option 1 = next highest, (0 = closest), -1 = next lowest
-        '[iCalcType] = Used to determine closest value (0 = algebraic), 1 = geometric
+        '[iCalcType] = Used to determine closest value (0 = algebraic), 1 = percent, 2 = percent difference, 3 = logarithmic
         '[dMatchType] = How the matching is done: (-1 = find best pair), 0 = stop at first perfect match, >0 = find pair with value closest to dMatchType
         '[dCompMinLimit] = Minimum Component Value (1)
         '[dCompMaxLimit] = Maximum Component Value (1,000,000)
@@ -123,6 +124,13 @@ Public Module funcESERIES
 
         'Error checking of input values
         If dTarget <= 0 Then Return ExcelError.ExcelErrorValue
+        If (iRound < -1) Or (iRound > +1) Then Return ExcelError.ExcelErrorValue
+        If (iCalcType < 0) Or (iCalcType > 3) Then Return ExcelError.ExcelErrorValue
+        If dMatchType < -1 Then Return ExcelError.ExcelErrorValue
+        If dCompMinLimit <= 0 Then Return ExcelError.ExcelErrorValue
+        If dCompMaxLimit <= 0 Then Return ExcelError.ExcelErrorValue
+        If dCompMaxLimit <= dCompMinLimit Then Return ExcelError.ExcelErrorValue
+
         sSeries = sSeries.ToUpper    'Correct for string values with lower case letters (i.e. "e24" vs "E24")
         Select Case sSeries
             Case "E3" : eValues = E3
@@ -135,12 +143,6 @@ Public Module funcESERIES
             Case Else
                 Return ExcelError.ExcelErrorName
         End Select
-        If (iRound < -1) Or (iRound > +1) Then Return ExcelError.ExcelErrorValue
-        If (iCalcType < 0) Or (iCalcType > 1) Then Return ExcelError.ExcelErrorValue
-        If dMatchType < -1 Then Return ExcelError.ExcelErrorValue
-        If dCompMinLimit <= 0 Then Return ExcelError.ExcelErrorValue
-        If dCompMaxLimit <= 0 Then Return ExcelError.ExcelErrorValue
-        If dCompMaxLimit <= dCompMinLimit Then Return ExcelError.ExcelErrorValue
 
         'These variables are checked below
         'If (iComboType < 0) Or (iComboType > 1) Then Return ExcelError.ExcelErrorValue  'Not needed as it's done below
@@ -200,7 +202,7 @@ Public Module funcESERIES
         <ExcelArgument(Name:="iRatioType", Description:="RatioType.  0 = Simple Ratio, 1 = Voltage Divider (dRatio > 1)")> iRatioType As Integer,
         <ExcelArgument(Name:="iReturnValue", Description:="Return Value: 0 = Array, 1 = Primary, 2 = Secondary, 3 = Tertiary, 4 = Ratio Offset")> iReturnValue As Integer,
         <ExcelArgument(Name:="[iRound]", Description:="Rounding: -1 = closest lower ratio, (0 = closest ratio), +1 = closest higher ratio")> Optional iRound As Integer = 0,
-        <ExcelArgument(Name:="[iCalcType]", Description:="Method for determining offset: (0 = algebraic), 1 = geometric")> Optional iCalcType As Integer = 0,
+        <ExcelArgument(Name:="[iCalcType]", Description:="Method for determining offset: (0 = algebraic), 1 = percent, 2 = percent difference, 3 = logarithmic")> Optional iCalcType As Integer = 0,
         <ExcelArgument(Name:="[iElements]", Description:="(0 = two components), three components: series pair (1 = bottom, 2 = top), parallel pair (3 = bottom, 4 = top)")> Optional iElements As Integer = 0,
         <ExcelArgument(Name:="[dMatchType]", Description:="Thevenin Matching: -1 = Match towards middle of range, (0 = Quick Match), >0 = Match to Preferred Value")> Optional dMatchType As Double = 0,
         <ExcelArgument(Name:="[dThevMinLimit]", Description:="Minimum Thevinen Resistance of network (default: 1,000)")> Optional dTotalMinLimit As Double = 1000,
@@ -215,7 +217,7 @@ Public Module funcESERIES
         'sSeries = E-series to be used
         'iReturnValue:  0 = Return upper component value, 1 = Return lower component value, 2 = Return lower secondary component value
         '[iRound] = 1 = closest higher ratio, (0 = closest), -1 = closest lower ratio
-        '[iCalcType] = Used to determine closest ratio value (0 = algebraic), 1 = geometric
+        '[iCalcType] = Used to determine closest value (0 = algebraic), 1 = percent, 2 = percent difference, 3 = logarithmic
         '[iElements] = (0 = two components), 1 = three components (series pair bottom), 2 = three components (parallel pair bottom)
         '[dMatchType] = How series/parallel matching is done: -1 = find best pair, 0 = stop at first perfect match, >0 = find pair with value closest to dMatchType
         '[dTotalMinLimit] = Minimum sum of components in network (1,000)
@@ -257,12 +259,13 @@ Public Module funcESERIES
         End If
 
         If (iRound < -1) Or (iRound > +1) Then Return ExcelError.ExcelErrorValue
-        If (iCalcType < 0) Or (iCalcType > 1) Then Return ExcelError.ExcelErrorValue
+        If (iCalcType < 0) Or (iCalcType > 3) Then Return ExcelError.ExcelErrorValue
         If (iElements < 0) Or (iElements > 4) Then Return ExcelError.ExcelErrorValue
         If dMatchType < -1 Then Return ExcelError.ExcelErrorValue
-        'If (iReturnValue < 0) Or (iReturnValue > 1) Then Return ExcelError.ExcelErrorValue  'Not needed as it's done below
 
+        'If (iReturnValue < 0) Or (iReturnValue > 1) Then Return ExcelError.ExcelErrorValue  'Not needed as it's done below
         'If (iComboType < 0) Or (iComboType > 1) Then Return ExcelError.ExcelErrorValue  'Not needed as it's done below
+
         sSeries = sSeries.ToUpper    'Correct for string values with lower case letters (i.e. "e24" vs "E24")
         Select Case sSeries
             Case "E3" : eValues = E3
@@ -310,27 +313,29 @@ Public Module funcESERIES
                     Case 2, 4       'invert calculated ratio
                         resValues(5) = 1 / resValues(5)
                 End Select
-                ResArrayValues(3, 0) = resValues(5) - dRatio
-                ResArrayValues(0, 3) = ResArrayValues(3, 0)
+
+                'Determine what the returned error value should be
+                ResArrayValues(3, 0) = OffsetValue(resValues(5), dRatio, iCalcType)
+                ResArrayValues(0, 3) = ResArrayValues(3, 0)     'Copy value for horizontal part of array
 
                 Return ResArrayValues
-            Case 1 'Resistor (Primary)
-                Return resValues(0)
-            Case 2 'Resistor (Secondary)
-                Return resValues(1)
-            Case 3 'Resistor (Tertiary)
-                Return resValues(2)
-            Case 4 'Ratio Offset
-                'Calculate Ratio Offset
-                Select Case iElements
-                    Case 0, 1, 3    'Do nothing Ratio is correct
-                    Case 2, 4       'invert calculated ratio
-                        resValues(5) = 1 / resValues(5)
+                    Case 1 'Resistor (Primary)
+                        Return resValues(0)
+                    Case 2 'Resistor (Secondary)
+                        Return resValues(1)
+                    Case 3 'Resistor (Tertiary)
+                        Return resValues(2)
+                    Case 4 'Ratio Offset
+                        'Calculate Ratio Offset
+                        Select Case iElements
+                            Case 0, 1, 3    'Do nothing Ratio is correct
+                            Case 2, 4       'invert calculated ratio
+                                resValues(5) = 1 / resValues(5)
+                        End Select
+                        Return resValues(5) - dRatio
+                    Case Else
+                        Return ExcelError.ExcelErrorValue   'Invalid return type
                 End Select
-                Return resValues(5) - dRatio
-            Case Else
-                Return ExcelError.ExcelErrorValue   'Invalid return type
-        End Select
 
     End Function
 
@@ -348,7 +353,7 @@ Public Module funcESERIES
         'dRatio = Target ratio
         'eValues() = table of E-Series values for matching
         '[iRound] = 1 = closest higher ratio, (0 = closest), -1 = closest lower ratio
-        '[iCalcType] = Used to determine closest ratio value (0 = algebraic), 1 = geometric
+        '[iCalcType] = Used to determine closest ratio value (0 = algebraic), 1 = percent, 2 = percent difference, 3 = logarithmic
         '[iElements] = (0 = two components), three components: series pair (1 = bottom, 2 = top), parallel pair (3 = bottom, 4 = top)
         '[dMatchType] = How series/parallel matching is done: -1 = find best pair, 0 = stop at first perfect match, >0 = find pair with value closest to dMatchType
         '[dTotalMinLimit] = Minimum sum of components in network 
@@ -363,7 +368,6 @@ Public Module funcESERIES
         Dim rtnValues(5) As Double          'Return values
         Dim comboValues(2) As Double        'Temporary return value storage for series/parallel calculations
         Dim iOrder As Integer               'Order index counter
-        Dim OrderValue As Double            'dValue shifted by an integer order of magnitude to match evalues table
         Dim iOrderStart As Integer          'Order start point
         Dim iIndex As Integer               'Index counter
         Dim rangeMiddle As Double           'Middle of range network resistance
@@ -372,13 +376,15 @@ Public Module funcESERIES
         Dim dPrimaryMin As Double           'Primary component minimum value
         Dim dPrimaryMax As Double           'Primary component maximum value
 
+        Dim dValueOrder As Double           'Order of magnitude calculated value
+
         'Initialize return values
         rtnValues(0) = 0                    'Primary resistor
         rtnValues(1) = 0                    'Secondary resistor
         rtnValues(2) = 0                    'Tertiary resistor
         rtnValues(3) = 10 ^ 10              'ABS Error between target ratio and calculated ratio (Initialize to 10 G)
         rtnValues(4) = 10 ^ 10              'ABS Error between MatchType value and closest resistor (Initialize to 10G)
-        rtnValues(5) = 0                    'Calculated Ratio
+        rtnValues(5) = 0                    'Calculated Ratio using E-Series Components
 
         'Initialize values
         rangeMiddle = dTotalMinLimit + ((dTotalMaxLimit - dTotalMinLimit) / 2)
@@ -398,22 +404,9 @@ Public Module funcESERIES
         'Moving forward, the ratio inversion means that all calculations can be thought of as the primary
         'component is on the top.
 
-        'Determine order start from minimum primary component
-        iOrder = 0      'Initialize iOrder to suitable starting point.
-        OrderValue = dPrimaryMin * (10 ^ iOrder)
-        Do Until (OrderValue >= 1) And (OrderValue < 10)
-            Select Case OrderValue
-                Case < 1          'Increment Order and recalculate
-                    iOrder += 1
-                    OrderValue = dPrimaryMin * (10 ^ iOrder)
-                Case >= 10        'Decrement Order and recalculate
-                    iOrder -= 1
-                    OrderValue = dPrimaryMin * (10 ^ iOrder)
-                Case Else   'No nothing, put for good programming practice
-            End Select
-        Loop
-        iOrderStart = -iOrder - 2 'Save starting position and normalize to stored E-series tables.
-
+        'Calculate dPrimaryMin order of magnitude
+        dValueOrder = Math.Floor(Math.Log10(dPrimaryMin))   'Calculate order of magnitude of dPrimaryMin
+        iOrderStart = dValueOrder - 2                       'Figure out starting order for searching on E-Series table
 
         'MATCH ROUTINE
         '-------------
@@ -471,8 +464,8 @@ Public Module funcESERIES
                 End Select
 
                 'Calculate Offsets
-                tmpValues(3, 0) = offsetValue(dRatio, tmpValues(5, 0), iCalcType)
-                tmpValues(3, 1) = offsetValue(dRatio, tmpValues(5, 1), iCalcType)
+                tmpValues(3, 0) = OffsetValue(tmpValues(5, 0), dRatio, iCalcType)
+                tmpValues(3, 1) = OffsetValue(tmpValues(5, 1), dRatio, iCalcType)
 
                 'See if either one is a better match
                 If tmpValues(3, 0) > rtnValues(3) And tmpValues(3, 1) > rtnValues(3) Then Continue For   'Both are bad.   Try next set
@@ -552,32 +545,25 @@ Public Module funcESERIES
         'dValue = target value (must be greater than 0)
         'eValues() = table of E-Series values for matching
         'iRound = Rounding option 1 = next highest, 0 = closest (algebraic), -1 = next lowest
-        'iCalcType:  0 returns closest algebraic value, 1 = returns closest geometric (percentage) value
+        'iCalcType:  0 returns closest algebraic value, 1 = percent, 2 = percent difference, 3 = logarithmic
 
         'Function return 0 (zero) if anything goes wrong
 
         'Setup Variables that we're going to use
-        Dim iOrder As Double            'Order of magnitude calculated from incoming dValue
-        Dim OrderValue As Double        'dValue shifted by an integer order of magnitude to match evalues table
+        Dim dValueOrder As Double       'Order of magnitude calculated from incoming dValue
+        Dim dValueShifted As Double     'dValue shifted by an integer order of magnitude to match evalues table
 
         Dim iIndex As Integer           'Index counter used for linear/binary search
         Dim iIndexJump As Integer       'Index counter jump value used for binary search
 
-        'Shift dValue to ensure 3 digits before decimal point.  
-        'This will match dValue with the eValues tables.
-        iOrder = 0
-        OrderValue = dValue * (10 ^ iOrder)
-        Do Until (OrderValue >= 100) And (OrderValue < 1000)
-            Select Case OrderValue
-                Case < 100          'Increment Order and recalculate
-                    iOrder += 1
-                    OrderValue = dValue * (10 ^ iOrder)
-                Case >= 1000        'Decrement Order and recalculate
-                    iOrder -= 1
-                    OrderValue = dValue * (10 ^ iOrder)
-                Case Else   'No nothing, put for good programming practice
-            End Select
-        Loop
+        'Shift dValue to ensure 3 digits before decimal point. 
+        dValueOrder = Math.Floor(Math.Log10(dValue))        'Calculate order of magnitude
+        dValueShifted = dValue * (10 ^ (2 - dValueOrder))   'Shift decimal point to match eSeries tables
+
+        If dValueShifted < 100 Then                         'Capture/correct rounding case for 99.99999999999
+            dValueOrder -= 1
+            dValueShifted = dValue * (10 ^ (2 - dValueOrder))
+        End If
 
         'At this point OrderValue is magnitude corrected version of dValue
         'Find E-series index of closest lower value
@@ -585,11 +571,11 @@ Public Module funcESERIES
         iIndexJump = (eValues.Length - 1) / 2   'Initialize Index Jump Counter
 
         'Use Binary Search to find closest lower value in chosen array
-        Do Until OrderValue >= eValues(iIndex) And OrderValue < eValues(iIndex + 1)
+        Do Until dValueShifted >= eValues(iIndex) And dValueShifted < eValues(iIndex + 1)
             'No match found
             iIndex += iIndexJump                        'Setup next Index search location
             'Setup the next Index Jump amount
-            If OrderValue >= eValues(iIndex) Then
+            If dValueShifted >= eValues(iIndex) Then
                 iIndexJump = Math.Abs(iIndexJump / 2)   'iIndexJump is positive
             Else
                 iIndexJump = -Math.Abs(iIndexJump / 2)  'iIndexJump is negative
@@ -597,24 +583,24 @@ Public Module funcESERIES
         Loop
 
         'Check if exact match
-        If OrderValue = eValues(iIndex) Then
+        If dValueShifted = eValues(iIndex) Then
             'Exact match found
-            Return (eValues(iIndex) / (10 ^ iOrder))
+            Return (eValues(iIndex) * (10 ^ (dValueOrder - 2)))
         Else
             'No exact match found, figure out rounding
             Select Case iRound
                 Case 0                          'Return Closest Value based in iCalcType
-                    If offsetValue(OrderValue, eValues(iIndex), iCalcType) < offsetValue(OrderValue, eValues(iIndex + 1), iCalcType) Then
+                    If OffsetValue(eValues(iIndex), dValueShifted, iCalcType) < OffsetValue(eValues(iIndex + 1), dValueShifted, iCalcType) Then
                         'Lower value is closer
-                        Return (eValues(iIndex) / (10 ^ iOrder))
+                        Return (eValues(iIndex) * (10 ^ (dValueOrder - 2)))
                     Else
                         'Higher value is closer or exactly the same distance from lower value
-                        Return (eValues(iIndex + 1) / (10 ^ iOrder))
+                        Return (eValues(iIndex + 1) * (10 ^ (dValueOrder - 2)))
                     End If
                 Case -1                         'Return Next Lower Value
-                    Return (eValues(iIndex) / (10 ^ iOrder))
+                    Return (eValues(iIndex) * (10 ^ (dValueOrder - 2)))
                 Case +1                         'Return Next Higher Value
-                    Return (eValues(iIndex + 1) / (10 ^ iOrder))
+                    Return (eValues(iIndex + 1) * (10 ^ (dValueOrder - 2)))
                 Case Else                       'iRound is out of range and we should return an error
                     Return 0
             End Select
@@ -631,7 +617,7 @@ Public Module funcESERIES
         'dTarget = target value (must be greater than 0)
         'eValues() = table of E-Series values for matching
         'iRound = Rounding option 1 = next highest, (0 = closest), -1 = next lowest
-        'iCalcType = Used to determine closest value (0 = algebraic), 1 = geometric
+        'iCalcType = Used to determine closest value (0 = algebraic), 1 = percent, 2 = percent difference, 3 = logarithmic
         'dMatchType = Details how the matching pair should be found.
         'dMxxLimit (optional): Limit returned calculated component values
 
@@ -645,10 +631,11 @@ Public Module funcESERIES
         Dim tmpValues(3, 1) As Double       'Holds calculated E-Series Values
         Dim rtnValues(3) As Double          'Return values
         Dim iOrder As Integer               'Order index counter
-        Dim OrderValue As Double            'dValue shifted by an integer order of magnitude to match evalues table
         Dim iOrderEnd As Integer          'Order end point
         Dim iIndex As Integer               'Index counter
         Dim CheckCounter As Integer
+
+        Dim dValueOrder As Double           'Order of magnitude calculated value
 
         'Initialize return values
         rtnValues(0) = 0                    'First found resistor
@@ -656,21 +643,9 @@ Public Module funcESERIES
         rtnValues(2) = 10 ^ 10              'Error between target and combo of two resistors (Initialize to 10 GOhm)
         rtnValues(3) = 10 ^ 10              'Error between MatchType value and closest resistor (Initialize to 10G)
 
-        'Find order of magnitude for dValue to start the search at
-        iOrder = 0
-        OrderValue = dMaxLimit * (10 ^ iOrder)
-        Do Until (OrderValue >= 1) And (OrderValue < 10)
-            Select Case OrderValue
-                Case < 1          'Increment Order and recalculate
-                    iOrder += 1
-                    OrderValue = dMaxLimit * (10 ^ iOrder)
-                Case >= 10        'Decrement Order and recalculate
-                    iOrder -= 1
-                    OrderValue = dMaxLimit * (10 ^ iOrder)
-                Case Else   'No nothing, put for good programming practice
-            End Select
-        Loop
-        iOrderEnd = -iOrder - 2 'Save starting position and normalize to stored E-series tables.
+        'Calculate dMaxLimit order of magnitude
+        dValueOrder = Math.Floor(Math.Log10(dMaxLimit))   'Calculate order of magnitude on dMinLimit
+        iOrderEnd = dValueOrder - 2                       'Figure out starting order for searching on E-Series table
 
         'MATCH ROUTINE
         '-------------
@@ -691,12 +666,10 @@ Public Module funcESERIES
                 tmpValues(1, 1) = simpleESERIES(tmpValues(1, 0), eValues, +1)   'Closest Secondary E-Series Value (higher)
                 tmpValues(1, 0) = simpleESERIES(tmpValues(1, 0), eValues, -1)   'Closest Secondary E-Series Value (lower)
                 'Calculate both offset values of combo from target
-                tmpValues(2, 0) = offsetValue(dTarget,
-                                                  (tmpValues(0, 0) * tmpValues(1, 0)) / (tmpValues(0, 0) + tmpValues(1, 0)),
-                                                  iCalcType)                                            'Lower Resistor Offset
-                tmpValues(2, 1) = offsetValue(dTarget,
-                                                  (tmpValues(0, 1) * tmpValues(1, 1)) / (tmpValues(0, 1) + tmpValues(1, 1)),
-                                                  iCalcType)                                             'Upper Resistor Offset
+                tmpValues(2, 0) = OffsetValue((tmpValues(0, 0) * tmpValues(1, 0)) / (tmpValues(0, 0) + tmpValues(1, 0)),
+                                              dTarget, iCalcType)                                            'Lower Resistor Offset
+                tmpValues(2, 1) = OffsetValue((tmpValues(0, 1) * tmpValues(1, 1)) / (tmpValues(0, 1) + tmpValues(1, 1)),
+                                              dTarget, iCalcType)                                             'Upper Resistor Offset
 
 
                 'See if either one is a better match
@@ -724,8 +697,8 @@ Public Module funcESERIES
                             tmpValues(3, CheckCounter) = Math.Abs(tmpValues(0, CheckCounter) - tmpValues(1, CheckCounter))
                         Case > 1    'Prefer one value be as close as possible to dMatchType
                             tmpValues(3, CheckCounter) = Math.Min(
-                                                  offsetValue(dMatchType, tmpValues(0, CheckCounter), iCalcType),
-                                                  offsetValue(dMatchType, tmpValues(1, CheckCounter), iCalcType))
+                                                  OffsetValue(tmpValues(0, CheckCounter), dMatchType, iCalcType),
+                                                  OffsetValue(tmpValues(1, CheckCounter), dMatchType, iCalcType))
                     End Select
 
                     'Equal/Better Match Found
@@ -759,14 +732,14 @@ Public Module funcESERIES
 
     'Returns closest series combination of two resistors to target value
     Private Function ComboSeriesResistor(dTarget As Double, eValues() As Double,
-                                           iRound As Integer, iCalcType As Integer, dMatchType As Double,
-                                           dMinLimit As Double, dMaxLimit As Double) As Double()
+                                         iRound As Integer, iCalcType As Integer, dMatchType As Double,
+                                         dMinLimit As Double, dMaxLimit As Double) As Double()
         'Returns two parallel values for target resistor
 
         'dTarget = target value (must be greater than 0)
         'eValues() = table of E-Series values for matching
         'iRound = Rounding option 1 = next highest, (0 = closest), -1 = next lowest
-        'iCalcType = Used to determine closest value (0 = algebraic), 1 = geometric
+        'iCalcType = Used to determine closest value (0 = algebraic), 1 = percent, 2 = percent difference, 3 = logarithmic
         'dMatchType = Details how the matching pair should be found.
         'dMxxLimit (optional): Limit returned calculated component values
 
@@ -780,10 +753,12 @@ Public Module funcESERIES
         Dim tmpValues(3, 1) As Double       'Holds calculated E-Series Values
         Dim rtnValues(3) As Double          'Return values
         Dim iOrder As Integer               'Order index counter
-        Dim OrderValue As Double            'dValue shifted by an integer order of magnitude to match evalues table
         Dim iOrderStart As Integer          'Order end point
         Dim iIndex As Integer               'Index counter
         Dim CheckCounter As Integer
+
+        Dim dValueOrder As Double           'Order of magnitude calculated value
+
 
         'Initialize return values
         rtnValues(0) = 0                    'First found resistor
@@ -791,21 +766,9 @@ Public Module funcESERIES
         rtnValues(2) = 10 ^ 10              'Error between target and combo of two resistors (Initialize to 10 GOhm)
         rtnValues(3) = 10 ^ 10              'Error between MatchType value and closest resistor (Initialize to 10G)
 
-        'Find order of magnitude for dValue to start the search at
-        iOrder = 0
-        OrderValue = dMinLimit * (10 ^ iOrder)
-        Do Until (OrderValue >= 1) And (OrderValue < 10)
-            Select Case OrderValue
-                Case < 1          'Increment Order and recalculate
-                    iOrder += 1
-                    OrderValue = dMinLimit * (10 ^ iOrder)
-                Case >= 10        'Decrement Order and recalculate
-                    iOrder -= 1
-                    OrderValue = dMinLimit * (10 ^ iOrder)
-                Case Else   'No nothing, put for good programming practice
-            End Select
-        Loop
-        iOrderStart = -iOrder - 2 'Save starting position and normalize to stored E-series tables.
+        'Calculate dMinLimit order of magnitude
+        dValueOrder = Math.Floor(Math.Log10(dMinLimit))     'Calculate order of magnitude on dMinLimit
+        iOrderStart = dValueOrder - 2                       'Figure out starting order for searching on E-Series table
 
         'MATCH ROUTINE
         '-------------
@@ -825,8 +788,8 @@ Public Module funcESERIES
                 tmpValues(1, 1) = simpleESERIES(tmpValues(1, 0), eValues, +1)   'Closest Secondary E-Series Value (higher)
                 tmpValues(1, 0) = simpleESERIES(tmpValues(1, 0), eValues, -1)   'Closest Secondary E-Series Value (lower)
                 'Calculate both offset values of combo from target
-                tmpValues(2, 0) = offsetValue(dTarget, (tmpValues(0, 0) + tmpValues(1, 0)), iCalcType)   'Lower Resistor Offset
-                tmpValues(2, 1) = offsetValue(dTarget, (tmpValues(0, 1) + tmpValues(1, 1)), iCalcType)   'Upper Resistor Offset
+                tmpValues(2, 0) = OffsetValue((tmpValues(0, 0) + tmpValues(1, 0)), dTarget, iCalcType)   'Lower Resistor Offset
+                tmpValues(2, 1) = OffsetValue((tmpValues(0, 1) + tmpValues(1, 1)), dTarget, iCalcType)   'Upper Resistor Offset
 
                 'See if either one is a better match
                 If tmpValues(2, 0) > rtnValues(2) And tmpValues(2, 1) > rtnValues(2) Then Continue For   'Both are bad.   Try next set
@@ -850,8 +813,8 @@ Public Module funcESERIES
                             tmpValues(3, CheckCounter) = Math.Abs(tmpValues(0, CheckCounter) - tmpValues(1, CheckCounter))
                         Case > 1    'Prefer one value be as close as possible to dMatchType
                             tmpValues(3, CheckCounter) = Math.Min(
-                                                  offsetValue(dMatchType, tmpValues(0, CheckCounter), iCalcType),
-                                                  offsetValue(dMatchType, tmpValues(1, CheckCounter), iCalcType))
+                                                  OffsetValue(tmpValues(0, CheckCounter), dMatchType, iCalcType),
+                                                  OffsetValue(tmpValues(1, CheckCounter), dMatchType, iCalcType))
                     End Select
 
                     'Equal/Better Match Found
@@ -883,20 +846,26 @@ Public Module funcESERIES
 
     End Function
 
-    'Returns value of offset based on calculation type (Algebraic vs. Geometric)
-    Private Function offsetValue(dTarget As Double, dValue As Double, Optional iCalcType As Integer = 0)
+    'Returns value of offset based on iCalcType parameter
+    Private Function OffsetValue(dVA As Double, dVE As Double, Optional iCalcType As Integer = 0)
         'Returns offset of value from target
-        'dTarget = target value
-        'dValue = compare Value
-        'dCalcType = option value to determine what kind of calculation we should use and what the function returns
-        '   0 = Algebraic = ABS(dTarget - dValue)
-        '   1 = Geometric = (% difference)
+        'dVA = Actual value     (test value)
+        'dVE = Expected value   (ideal calculated value)
+        'iCalcType = option value to determine what kind of calculation we should use and what the function returns
+        '   0 = Algebraic 
+        '   1 = Percent 
+        '   2 = Percent Difference  (Geometric)
+        '   3 = Logarithmic
 
         Select Case iCalcType
             Case 0      'Calculate Algebraic Error
-                offsetValue = Math.Abs(dValue - dTarget)
-            Case 1      'Calculate Geometric Error
-                offsetValue = (Math.Abs(dValue - dTarget)) / ((dTarget + dValue) / 2)
+                OffsetValue = Math.Abs(dVA - dVE)
+            Case 1      'Calculate Percent Error
+                OffsetValue = Math.Abs((dVA - dVE) / dVE)
+            Case 2      'Calculate Percent Difference Error
+                OffsetValue = (Math.Abs(dVA - dVE)) / ((dVA + dVE) / 2)
+            Case 3      'Calculate Logarithmic Error
+                OffsetValue = Math.Abs((0.5) * Math.Log10(dVA / dVE))
             Case Else   'Not valid
                 Return 0
         End Select
