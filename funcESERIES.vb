@@ -319,23 +319,23 @@ Public Module funcESERIES
                 ResArrayValues(0, 3) = ResArrayValues(3, 0)     'Copy value for horizontal part of array
 
                 Return ResArrayValues
-                    Case 1 'Resistor (Primary)
-                        Return resValues(0)
-                    Case 2 'Resistor (Secondary)
-                        Return resValues(1)
-                    Case 3 'Resistor (Tertiary)
-                        Return resValues(2)
-                    Case 4 'Ratio Offset
-                        'Calculate Ratio Offset
-                        Select Case iElements
-                            Case 0, 1, 3    'Do nothing Ratio is correct
-                            Case 2, 4       'invert calculated ratio
-                                resValues(5) = 1 / resValues(5)
-                        End Select
-                        Return resValues(5) - dRatio
-                    Case Else
-                        Return ExcelError.ExcelErrorValue   'Invalid return type
+            Case 1 'Resistor (Primary)
+                Return resValues(0)
+            Case 2 'Resistor (Secondary)
+                Return resValues(1)
+            Case 3 'Resistor (Tertiary)
+                Return resValues(2)
+            Case 4 'Ratio Offset
+                'Calculate Ratio Offset
+                Select Case iElements
+                    Case 0, 1, 3    'Do nothing Ratio is correct
+                    Case 2, 4       'invert calculated ratio
+                        resValues(5) = 1 / resValues(5)
                 End Select
+                Return resValues(5) - dRatio
+            Case Else
+                Return ExcelError.ExcelErrorValue   'Invalid return type
+        End Select
 
     End Function
 
