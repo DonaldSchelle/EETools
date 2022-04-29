@@ -51,18 +51,10 @@ When iRound is set to 0, all functions consider both positive and negative error
 
 | **iCalcType** | **Description**    | **Calculation**                                                 |
 | :-----------: | :-----------------:| :-- |
-|       0       | Algebraic          | <!-- $$\delta = \lvert \nu_A-\nu_E \rvert$$ --> 
-
-<div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math=$$\delta = \lvert \nu_A-\nu_E \rvert$$"></div>                          |
-|       1       | Percent Error      | <!-- $$\delta = \Bigg\lvert{\frac{\nu_A-\nu_E}{\nu_E}\Bigg\rvert}\times 100\%$$ --> 
-
-<div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math="></div>|
-|       2       | Percent Difference | <!-- $$\delta = \Bigg\lvert{\frac{\nu_A-\nu_E}{\frac{(\nu_A+\nu_E)}{2}}\Bigg\rvert}\times 100\%$$ --> 
-
-<div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math="></div>|
-|       3       | Logarithmic Error  | <!-- $$\delta = \Bigg\lvert{\frac{log(\nu_A)-log(\nu_E)}{2}\Bigg\rvert} = \Bigg\lvert\frac{1}{2}\times log\left(\frac{\nu_A}{\nu_E}\right) \Bigg\rvert$$ --> 
-
-<div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math="></div> |
+|       0       | Algebraic          | <div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math=\delta = \lvert \nu_A-\nu_E \rvert"></div> |
+|       1       | Percent Error      | <div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math=%5Cdelta%20%3D%20%5CBigg%5Clvert%7B%5Cfrac%7B%5Cnu_A-%5Cnu_E%7D%7B%5Cnu_E%7D%5CBigg%5Crvert%7D%5Ctimes%20100%5C%25"></div>|
+|       2       | Percent Difference | <div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math=%5Cdelta%20%3D%20%5CBigg%5Clvert%7B%5Cfrac%7B%5Cnu_A-%5Cnu_E%7D%7B%5Cfrac%7B(%5Cnu_A%2B%5Cnu_E)%7D%7B2%7D%7D%5CBigg%5Crvert%7D%5Ctimes%20100%5C%25"></div>|
+|       3       | Logarithmic Error  | <div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math=%5Cdelta%20%3D%20%5CBigg%5Clvert%7B%5Cfrac%7Blog(%5Cnu_A)-log(%5Cnu_E)%7D%7B2%7D%5CBigg%5Crvert%7D%20%3D%20%5CBigg%5Clvert%5Cfrac%7B1%7D%7B2%7D%5Ctimes%20log%5Cleft(%5Cfrac%7B%5Cnu_A%7D%7B%5Cnu_E%7D%5Cright)%20%5CBigg%5Crvert"></div> |
 
 
 where
@@ -70,6 +62,7 @@ where
 - &delta; is calculated error
 - &nu;<sub>A</sub> is actual value (test value)
 - &nu;<sub>E</sub> is expected value (ideal value)
+
 
 
 Algebraic and Percent Error yield equally weighted error regardless of positive or negative error.  Use Percent Difference and Logarithmic Error for applications that benefit by favouring positive error over negative.   Plotting error calculation results (figure 2) using an arbitrary 1Ω resistor yields additional insight.  With a large enough range, the non-linear behavior of the Percent Difference and Logarithmic calculation methods become clear. 
