@@ -12,15 +12,17 @@ Candidly, this problem has been solved many different ways with cumbersome large
 
 <img src="Figures\Figure 1.png" style="zoom: 50%;" />
 
-<p align="center">**Figure 1** – ExcelDNA enables support for IntelliSense which provides a handy interactive reference when using Excel UDFs</p>
+**Figure 1** – ExcelDNA enables support for IntelliSense which provides a handy interactive reference when using Excel UDFs
+
+
 
 
 
 EETtools is a .XLL that leverages the ExcelDNA framework to create three UDF’s that ease resistor calculations.   The simplest of the three functions, ***ESERIES***, selects an appropriate value from a standard E-series value table.   After choosing a target value (dValue), set the sSeries parameter to select which table is used (E3 to E192).  A speed-optimized binary search through the E-series table selects the next lowest and highest E-series value.   Offset error for each selected value is calculated, and the function returns the E-series value yielding the lowest calculated error.  Table 1 outlines all available *ESERIES* UDF parameters.
 
+
+
 **Table 1. *ESERIES* UDF Parameters**
-
-
 
 |**Parameter**|**Default**|**Description**|
 | :-: | :-: | :- |
@@ -79,7 +81,7 @@ Further illustrating; consider the value of 1009.96 Ω using an E96 table (figur
 
 <img src="Figures\Figure 3.png" style="zoom: 50%;" />
 
-<p align="center">**Figure 3** – Application requirements may require one of many supported offset calculation types.</p>
+<p align="center"><bold>Figure 3</bold> – Application requirements may require one of many supported offset calculation types.</p>
 
 
 
