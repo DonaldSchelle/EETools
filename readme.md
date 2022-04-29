@@ -81,7 +81,7 @@ Further illustrating; consider the value of 1009.96 Ω using an E96 table (figur
 
 <img src="Figures\Figure 3.png" style="zoom: 50%;" />
 
-<p align="center"><bold>Figure 3</bold> – Application requirements may require one of many supported offset calculation types.</p>
+<p align="center"><b>Figure 3</b> – Application requirements may require one of many supported offset calculation types.</p>
 
 
 
