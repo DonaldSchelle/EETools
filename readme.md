@@ -1,6 +1,6 @@
 ﻿# **Automate those Tedious Resistor Calculations**
 
-By Don Schelle
+By Don Schelle - January 2021
 
 
 
@@ -131,7 +131,7 @@ Without physical limits, resistor values may be chosen that simply aren’t prac
 
 Generating resistor values given a desired target ratio is the next evolution.   Use the *ESeriesResistorRatio* to accomplish exactly this.   
 
-iRatioType configures the UDF to return resistor values tailored to a specific application (figure 5).  Set iRatioType to **Simple Ratio** (iRatioType = 0) instructs the calculator to find resistors that will most closely match the desired ratio.   Setting iRatioType to **Voltage Divider** (iRatioType = 1) instructs the calculator to first convert the voltage ratio into an equivalent resistor ratio, and then search for it.  For example, suppose we want a voltage divider ratio D = RSECONDARY / (RPRIMARY + RSECONDARY), the calculator first converts it to resistor ratio RSECONDARY/RPRIMARY = D / (1-D), and then searches for that ratio.
+iRatioType configures the UDF to return resistor values tailored to a specific application (figure 5).  Set iRatioType to **Simple Ratio** (iRatioType = 0) instructs the calculator to find resistors that will most closely match the desired ratio.   Setting iRatioType to **Voltage Divider** (iRatioType = 1) instructs the calculator to first convert the voltage ratio into an equivalent resistor ratio, and then search for it.  For example, suppose we want a voltage divider ratio D = R<sub>SECONDARY</sub> / (R<sub>PRIMARY</sub> + R<sub>SECONDARY</sub>), the calculator first converts it to resistor ratio R<sub>SECONDARY</sub>/R<sub>PRIMARY</sub> = D / (1-D), and then searches for that ratio.
 
 <img src="Figures\Figure 5.png" style="zoom:50%;" />
 
@@ -151,7 +151,7 @@ As an example (figure 7), we can use the iElements parameter (figure 6) to calcu
 
 <img src="Figures\Figure 7.png" style="zoom:50%;" />
 
-<p align="center"><b>Figure 7K</b> – The iElements parameter allows the <i>ESeriesResistorRatio</i> to generate perfect resistor ratio networks under nearly all circumstances.</p>
+<p align="center"><b>Figure 7</b> – The iElements parameter allows the <i>ESeriesResistorRatio</i> to generate perfect resistor ratio networks under nearly all circumstances.</p>
 
 
 
@@ -250,19 +250,21 @@ There are very few limits regarding automation inside Excel.   Full source-code 
 
 ### **References**
 
-1. Art Kay, Tim Green. “*Analog Engineer's Pocket Reference”, Texas Instruments.* <http://www.ti.com/seclit/eb/slyw038c/slyw038c.pdf>
-2. Christine Schneider*. “Excel Formula Calculates Standard 1%-Resistor Values*.”, EDN, (2002, January 20)
+1. Art Kay, Tim Green. “*Analog Engineer's Pocket Reference”, Texas Instruments.* 
+   - <http://www.ti.com/seclit/eb/slyw038c/slyw038c.pdf>
 
-[http://www.electronicdesign.com/technologies/components/article/21763411/excel-formula-calculates-standard-1resistor-values](http://www.electronicdesign.com/technologies/components/article/21763411/excel-formula-calculates-standard-1resistor-values%20) 
+2. Christine Schneider. <i>“Excel Formula Calculates Standard 1%-Resistor Values.”</i>, EDN, (2002, January 20)
+   - [http://www.electronicdesign.com/technologies/components/article/21763411/excel-formula-calculates-standard-1resistor-values](http://www.electronicdesign.com/technologies/components/article/21763411/excel-formula-calculates-standard-1resistor-values%20) 
+
 
 3. Donald Schelle.  “*Calculate standard resistor values in Excel”, EDN,* (2013, January 2).
+   - <http://www.edn.com/calculate-standard-resistor-values-in-excel/>
 
-<http://www.edn.com/calculate-standard-resistor-values-in-excel/>
 
 4. Dwight Larson. “*Say “No More” to Tedious Calculations for E Series Values*.” (2020, April 7). 
+   - <http://www.maximintegrated.com/en/design/blog/say-no-more-to-tedious-calculations-for-e-series-values.html>
 
-<http://www.maximintegrated.com/en/design/blog/say-no-more-to-tedious-calculations-for-e-series-values.html>
 
 5. *Excel-DNA, Free and easy .NET for Excel*. (2020). 
+   - <http://excel-dna.net/>
 
-<http://excel-dna.net/>
