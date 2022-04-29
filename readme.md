@@ -51,10 +51,18 @@ When iRound is set to 0, all functions consider both positive and negative error
 
 | **iCalcType** | **Description**    | **Calculation**                                                 |
 | :-----------: | :-----------------:| :-- |
-|       0       | Algebraic          | $$\delta = \lvert \nu_A-\nu_E \rvert$$                          |
-|       1       | Percent Error      | $$\delta = \Bigg\lvert{\frac{\nu_A-\nu_E}{\nu_E}\Bigg\rvert}\times 100\%$$|
-|       2       | Percent Difference | $$\delta = \Bigg\lvert{\frac{\nu_A-\nu_E}{\frac{(\nu_A+\nu_E)}{2}}\Bigg\rvert}\times 100\%$$|
-|       3       | Logarithmic Error  | $$\delta = \Bigg\lvert{\frac{log(\nu_A)-log(\nu_E)}{2}\Bigg\rvert} = \Bigg\lvert\frac{1}{2}\times log\left(\frac{\nu_A}{\nu_E}\right) \Bigg\rvert$$ |
+|       0       | Algebraic          | <!-- $$\delta = \lvert \nu_A-\nu_E \rvert$$ --> 
+
+<div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math="></div>                          |
+|       1       | Percent Error      | <!-- $$\delta = \Bigg\lvert{\frac{\nu_A-\nu_E}{\nu_E}\Bigg\rvert}\times 100\%$$ --> 
+
+<div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math="></div>|
+|       2       | Percent Difference | <!-- $$\delta = \Bigg\lvert{\frac{\nu_A-\nu_E}{\frac{(\nu_A+\nu_E)}{2}}\Bigg\rvert}\times 100\%$$ --> 
+
+<div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math="></div>|
+|       3       | Logarithmic Error  | <!-- $$\delta = \Bigg\lvert{\frac{log(\nu_A)-log(\nu_E)}{2}\Bigg\rvert} = \Bigg\lvert\frac{1}{2}\times log\left(\frac{\nu_A}{\nu_E}\right) \Bigg\rvert$$ --> 
+
+<div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math="></div> |
 
 
 where
