@@ -50,7 +50,7 @@ When iRound is set to 0, all functions consider both positive and negative error
 **Table 2. iCalcType Summary**
 
 | **iCalcType** | **Description**    | **Calculation**                                                 |
-| :-----------: | :-----------------:| :-- |
+| :-----------: | :-----------------:| :--: |
 |       0       | Algebraic          | <div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math=\delta = \lvert \nu_A-\nu_E \rvert"></div> |
 |       1       | Percent Error      | <div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math=%5Cdelta%20%3D%20%5CBigg%5Clvert%7B%5Cfrac%7B%5Cnu_A-%5Cnu_E%7D%7B%5Cnu_E%7D%5CBigg%5Crvert%7D%5Ctimes%20100%5C%25"></div>|
 |       2       | Percent Difference | <div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math=%5Cdelta%20%3D%20%5CBigg%5Clvert%7B%5Cfrac%7B%5Cnu_A-%5Cnu_E%7D%7B%5Cfrac%7B(%5Cnu_A%2B%5Cnu_E)%7D%7B2%7D%7D%5CBigg%5Crvert%7D%5Ctimes%20100%5C%25"></div>|
