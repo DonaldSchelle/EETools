@@ -53,7 +53,7 @@ When iRound is set to 0, all functions consider both positive and negative error
 | :-----------: | :-----------------:| :-- |
 |       0       | Algebraic          | <!-- $$\delta = \lvert \nu_A-\nu_E \rvert$$ --> 
 
-<div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math="></div>                          |
+<div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math=$$\delta = \lvert \nu_A-\nu_E \rvert$$"></div>                          |
 |       1       | Percent Error      | <!-- $$\delta = \Bigg\lvert{\frac{\nu_A-\nu_E}{\nu_E}\Bigg\rvert}\times 100\%$$ --> 
 
 <div align="center"><img style="background: white;" src="https://render.githubusercontent.com/render/math?math="></div>|
