@@ -49,21 +49,19 @@ When iRound is set to 0, all functions consider both positive and negative error
 
 **Table 2. iCalcType Summary**
 
-| **iCalcType** | **Description**    | **Calculation**                                      |
-| :-----------: | :----------------- | :--------------------------------------------------- |
-|       0       | Algebraic          | $\delta$ = \| $\nu\substack{A} - \nu\substack{E}$ \| |
-|       1       | Percent Error      | $\delta$ =                                           |
-|       2       | Percent Difference | $\delta$ = vA-vEvA+vE2∙100%                          |
-|       3       | Logarithmic Error  | $\delta$ =                                           |
-
-​		$\delta$ is calculated error
-
-​		$\nu\substack{A}$ is actual value (test value)
-
-​		$\nu\substack{E}$ is expected value (ideal value)
+| **iCalcType** | **Description**    | **Calculation**                                                 |
+| :-----------: | :-----------------:| :-- |
+|       0       | Algebraic          | $$\delta = \lvert \nu_A-\nu_E \rvert$$                          |
+|       1       | Percent Error      | $$\delta = \Bigg\lvert{\frac{\nu_A-\nu_E}{\nu_E}\Bigg\rvert}\times 100\%$$|
+|       2       | Percent Difference | $$\delta = \Bigg\lvert{\frac{\nu_A-\nu_E}{\frac{(\nu_A+\nu_E)}{2}}\Bigg\rvert}\times 100\%$$|
+|       3       | Logarithmic Error  | $$\delta = \Bigg\lvert{\frac{log(\nu_A)-log(\nu_E)}{2}\Bigg\rvert} = \Bigg\lvert\frac{1}{2}\times log\left(\frac{\nu_A}{\nu_E}\right) \Bigg\rvert$$ |
 
 
+where
 
+- &delta; is calculated error
+- &nu;<sub>A</sub> is actual value (test value)
+- &nu;<sub>E</sub> is expected value (ideal value)
 
 
 Algebraic and Percent Error yield equally weighted error regardless of positive or negative error.  Use Percent Difference and Logarithmic Error for applications that benefit by favouring positive error over negative.   Plotting error calculation results (figure 2) using an arbitrary 1Ω resistor yields additional insight.  With a large enough range, the non-linear behavior of the Percent Difference and Logarithmic calculation methods become clear. 
