@@ -12,7 +12,7 @@ Candidly, this problem has been solved many different ways with cumbersome large
 
 <img src="Figures\Figure 1.png" style="zoom: 50%;" />
 
-**Figure 1** – ExcelDNA enables support for IntelliSense which provides a handy interactive reference when using Excel UDFs
+<p align="center"><b>Figure 1</b> – ExcelDNA enables support for IntelliSense which provides a handy interactive reference when using Excel UDFs</p>
 
 
 
@@ -72,8 +72,7 @@ Algebraic and Percent Error yield equally weighted error regardless of positive 
 
 <img src="Figures\Figure 2.png" style="zoom:50%;" />
 
-
-<p align="center"> **Figure 2** – EETools allows the user to choose how error is calculated and can favour positive over negative error.  Percent and Percent Difference error are plotted on the left axis.   Algebraic and Logarithmic error are plotted on the right axis.</p>
+<p align="center"><b>Figure 2</b> – EETools allows the user to choose how error is calculated and can favour positive over negative error.  Percent and Percent Difference error are plotted on the left axis.   Algebraic and Logarithmic error are plotted on the right axis.</p>
 
 
 
@@ -99,7 +98,7 @@ Generally, Excel UDF’s only return a single variable and this function is no d
 
 <img src="Figures\Figure 4.png" style="zoom:50%;" />
 
-**Figure 4** – Excel returns an array of values when pressing **CTRL**+**SHIFT**+**ENTER** after selecting the desired cell configuration, and entering a supported function in the formula bar.
+<p align="center"><b>Figure 4</b> – Excel returns an array of values when pressing <b>CTRL</b>+<b>SHIFT</b>+<b>ENTER</b> after selecting the desired cell configuration, and entering a supported function in the formula bar.</p>
 
 
 
@@ -136,7 +135,7 @@ iRatioType configures the UDF to return resistor values tailored to a specific a
 
 <img src="Figures\Figure 5.png" style="zoom:50%;" />
 
-<p align="center"> **Figure 5** – The *ESeriesResistorRatio* UDF can be configured to find values for either a simple resistor ratio, typical when calculating gain for an inverting op-amp; or for a voltage divider ratio typical for feedback resistor calculations when implementing power regulators.</p>
+<p align="center"> <b>Figure 5</b> – The <i>ESeriesResistorRatio</i> UDF can be configured to find values for either a simple resistor ratio, typical when calculating gain for an inverting op-amp; or for a voltage divider ratio typical for feedback resistor calculations when implementing power regulators.</p>
 
 
 
@@ -144,7 +143,7 @@ iRatioType configures the UDF to return resistor values tailored to a specific a
 
 <img src="Figures\Figure 6.png" style="zoom:50%;" />
 
-<p align="center">**Figure 6** – The iElements parameter instructs the *ESeriesResistorRatio* to find values according to the desired network implementation.</p>
+<p align="center"><b>Figure 6</b> – The iElements parameter instructs the <i>ESeriesResistorRatio</i> to find values according to the desired network implementation.</p>
 
 
 
@@ -152,7 +151,7 @@ As an example (figure 7), we can use the iElements parameter (figure 6) to calcu
 
 <img src="Figures\Figure 7.png" style="zoom:50%;" />
 
-<p align="center">**Figure 7** – The iElements parameter allows the *ESeriesResistorRatio* to generate perfect resistor ratio networks under nearly all circumstances.</p>
+<p align="center"><b>Figure 7K</b> – The iElements parameter allows the <i>ESeriesResistorRatio</i> to generate perfect resistor ratio networks under nearly all circumstances.</p>
 
 
 
@@ -210,7 +209,7 @@ Suppose that we want to design regulator circuits capable of any output voltage 
 
 <img src="Figures\Figure 8.png" style="zoom:50%;" />
 
-<p align="center">**Figure 8** – Calculating the best possible error for each output voltage given a constrained set of design criteria becomes trivial once the computational heavy-lifting is automated.</p>
+<p align="center"><b>Figure 8</b> – Calculating the best possible error for each output voltage given a constrained set of design criteria becomes trivial once the computational heavy-lifting is automated.</p>
 
 
 
